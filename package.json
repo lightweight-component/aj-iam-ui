@@ -1,13 +1,13 @@
 {
-  "name": "@ajaxjs/iam",
+  "name": "@ajaxjs/dataservice-ui",
   "version": "1.0.0",
-  "description": "AJ-IAM UI",
+  "description": "Data Service UI",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lightweight-component/aj-iam-ui.git"
+    "url": "git+https://github.com/lightweight-component/data-service-ui.git"
   },
   "bugs": {
-    "url": "https://github.com/lightweight-component/aj-iam-ui/issues"
+    "url": "https://github.com/lightweight-component/data-service-ui/issues"
   },
   "main": "dist/index.js",
   "types": "dist/libs/common.d.ts",
@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "vue-codemirror": "^4.0.6",
-    "@ajaxjs/ui": "1.1.9"
+    "@ajaxjs/ui": "1.2.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
