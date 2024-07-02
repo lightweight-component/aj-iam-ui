@@ -7,3 +7,5 @@
 # AJ-IAM UI
 
 This is the UI of AJ-IAM, the server side is at: https://github.com/lightweight-component/aj-iam.
+
+![AJ-IAM](asset/ui.jpg "UI")
