@@ -1,93 +1,46 @@
 <template>
-  <DataService />
+  <div>
+       <Menu class="left-panel" :open-names="['portal-1', 'portal-2']">
+            <h3>用户管理</h3>
+            <Submenu name="portal-1" >
+              <template slot="title">用户组织管理</template>
+              <MenuItem name="4-1" @click.native="load = 'UserListIndex'">用户列表管理</MenuItem>
+              <MenuItem name="4-2" @click.native="load = 'OrgIndex'">组织机构管理</MenuItem>
+              <MenuItem name="4-3" @click.native="load = 'RBAC'">权限管理</MenuItem>
+              <MenuItem name="4-3" @click.native="load = 'Permission'">权限管理2</MenuItem>
+            </Submenu>
+
+            <Submenu name="portal-2">
+              <template slot="title">认证管理</template>
+              <MenuItem name="user-2-1" @click.native="showList(130, '客户端应用')">客户端应用</MenuItem>
+              <MenuItem name="user-2-2" @click.native="showList(129, '租户管理')">租户管理</MenuItem>
+              <MenuItem name="user-2-3" @click.native="showList(131, 'Token 列表')">Token 管理</MenuItem>
+            </Submenu>
+        </Menu>
+        <div class="right-panel">
+            <OrgIndex v-if="load == 'OrgIndex'" />
+            <UserListIndex v-if="load == 'UserListIndex'" />
+            <RBAC v-if="load == 'RBAC'" />
+            <Permission v-if="load == 'Permission'" />
+        </div>
+  </div>
 </template>
 
 <script>
-import DataService from "./data-service/data-service.vue";
-// import DataServiceIndex from "../components/data-service/index/index.vue";
-import { setBaseQueryString } from '@ajaxjs/util/dist/util/xhr';
-
-function getQueryParam(variable, isParent) {
-  var query = (isParent ? parent.location : window.location).search.substring(
-    1
-  );
-  var vars = query.split("&");
-
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split("=");
-
-    if (pair[0] == variable) return pair[1];
-  }
-
-  return false;
-}
-
-window.loginUrl = "http://127.0.0.1:8088/base/user/login?web_url=http://localhost:8081";
-const token = getQueryParam("token");
-let accessToken = localStorage.getItem("accessToken");
-
-if (!accessToken && !token) {
-  // alert("你未登录！");
-  // location.assign(loginUrl);
-}
-
-if (token) {
-  accessToken = decodeURIComponent(token);
-  localStorage.setItem("accessToken", accessToken);
-
-  // 只需要第一次的参数，之后不需要，现在清除
-  const url = new URL(location.href); // 创建一个包含查询参数的URL
-  const params = new URLSearchParams(url.search); // 获取URL中的查询参数
-  params.delete("token"); // 删除名为'b'的参数
-  url.search = params.toString(); // 更新URL的查询参数
-
-  location.assign(url.href);
-}
-
-// window.JWT_TOKEN = JSON.parse(accessToken);
-
-// 将JWT Token拆分为三个部分
-// const tokenParts = window.JWT_TOKEN.id_token.split(".");
-// const tokenParts = accessToken.split(".");
-// const payload = JSON.parse(atob(tokenParts[1])); // 解析载荷
-// console.log(payload.aud);
-
-// // 租户 id
-// const arr = payload.aud.match(/(?<=tenantId=)\d+/);
-
-// if (arr) {
-//     const tenantId = arr[0];
-//     setBaseQueryString({ tenantId: tenantId });
-// }
-
-// 监听来自A域的网页发送的消息
-window.addEventListener("message", function (event) {
-  // if (event.origin === 'http://A域的网页地址') {
-  console.log("收到来自A域的网页的消息：", event.data);
-
-  if (event.data === "doLogout") {
-    localStorage.removeItem("accessToken");
-  }
-  // }
-});
+import RBAC from './rbac/rbac.vue';
+import Permission from "./permission/permission-index.vue";
 
 export default {
-  components: {
-    DataService
-  },
+  components: {RBAC, Permission},
   data() {
     return {
-
+      load: ''
     };
   },
-
   methods: {
-    routeTo(route) {
-      location.hash = "#/" + route;
-    },
-    open(route) {
-      window.open("#/" + route);
-    },
+    showList() {
+
+    }
   },
 };
 </script>
@@ -98,17 +51,14 @@ export default {
   max-width: 800px;
   margin: 10px auto;
 }
-
 html,
-body,
-.main > .ivu-menu {
-  height: 100%;
+body{
+  overflow: hidden;
 }
-
-/* 分页控件有点问题，修改下 */
-.ivu-mt.ivu-text-right {
-  text-align: right;
-  margin-top: 20px;
+html,
+body, body> div,
+body> div > .ivu-menu {
+  height: 100%;
 }
 
 h1.page-title {
@@ -133,7 +83,29 @@ h3 {
   height: 9%;
 }
 
+body > div {
+  display: flex;
+}
+
+.left-panel {
+    flex: 0 0 200px;
+    height: 100%;
+
+}
+
+.right-panel {
+    flex: 1;
+    height: 100%;
+}
+
 .ivu-menu-submenu-title {
   border-top: 1px solid #eee;
+}
+</style>
+
+<style lang="less">
+.ivu-menu.ivu-menu-vertical {
+    background: url(~@/assets/user.png) no-repeat 110px bottom;
+    background-size: 72%;
 }
 </style>
